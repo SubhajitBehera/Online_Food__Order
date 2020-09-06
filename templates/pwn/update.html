@@ -1,0 +1,27 @@
+
+{% extends 'pwn/welcome.html' %}
+
+{% block admin_welcome %}
+    {% load static %}
+    <form action="{% url 'updatestate' %}" method="post" enctype="multipart/form-data">
+{% csrf_token %}
+    <table  border="0" style="text-align: center;padding-left: auto">
+          <h1>Update State </h1>
+        <tr>
+            <th><input type="number" required placeholder="Id" name="s3" value="{{ pdata.id }}" ></th>
+        </tr>
+
+        <tr>
+            <th><input type="text" required placeholder="State Name" name="s1" value="{{ pdata.name }}" ></th>
+        </tr>
+        <tr>
+            <th>
+
+                <input type="file" required placeholder="image" name="s2" value="{{ pdata.photo.url }}" alt="{{ pdata.image.url }}"></th>
+        </tr>
+        <tr>
+            <th><button type="submit">Update</button></th>
+        </tr>
+    </table>
+    </form>
+ {% endblock %}

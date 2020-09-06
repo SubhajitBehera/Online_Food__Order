@@ -1,0 +1,79 @@
+{% extends 'pwn/welcome.html' %}
+
+{% block admin_welcome %}
+    {% load static %}
+<form action="{% url 'addcity' %}" method="post" enctype="multipart/form-data">
+{% csrf_token %}
+    <div class="col-sm-6" style="text-align: center;padding-left:600px">
+        <table align="center" border="0" style="background:#c3e6cb">
+            <tr><th><h1 style="color: #1111ff"><b>Add City</b> </h1></th></tr>
+            <tr>
+            <th><input type="text" required placeholder="City Name" name="c1" value="{{ data.name }}"></th>
+        </tr>
+        <tr>
+            <th><input type="file" required placeholder="image" name="c2" value="{{ data.photo.url }}"></th>
+        </tr>
+        <tr>
+        <th>
+           <select name="c3">
+                            {% for x in data %}
+                                <option value="{{ x.id }}"> {{ x.name }}</option>
+                            {% endfor %}
+                        </select>
+        </th>
+        </tr>
+        <tr>
+            <th><button type="submit">Add</button></th>
+        </tr>
+
+
+
+
+     {% for x in messages %}
+        <tr><th>
+        <h3 style="color: red;font-size: 40px;font-family: 'Segoe MDL2 Assets';text-align: center">
+            {{ x }}
+        </h3>
+        </th></tr>
+    {% endfor %}
+        <tr>
+            <th><h7 style="text-align: center"><a href="{% url 'view' %}"><b>View All City Details</b></a></h7></th>
+        </tr>
+  </table>
+    </div>
+</form>
+
+
+
+   <form action="{% url 'update_city' %}" method="post" enctype="multipart/form-data">
+   {% csrf_token %}
+    <table  border="0" style="text-align: center;padding-left: auto">
+          <tr><th><h1>Update City </h1></th></tr>
+        <tr>
+            <th><input type="number" required placeholder="Id" name="c3" value="{{ pdata.id }}" ></th>
+        </tr>
+
+        <tr>
+            <th><input type="text" required placeholder="City Name" name="c1" value="{{ pdata.name }}" ></th>
+        </tr>
+        <tr>
+        <th>
+           <select name="c4">
+                            {% for x in data %}
+                                <option value="{{ x.id }}"> {{ x.name }}</option>
+                            {% endfor %}
+                        </select>
+        </th>
+        <tr>
+            <th>
+
+                <input type="file" required placeholder="image" name="c2" value="{{ pdata.photo.url }}" alt="{{ pdata.image.url }}"></th>
+        </tr>
+        <tr><th>{{ pdata.photo.file }}</th>
+        </tr>
+        <tr>
+            <th><button type="submit">Update</button></th>
+        </tr>
+    </table>
+   </form>
+    {% endblock %}
