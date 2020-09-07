@@ -3,33 +3,113 @@
 {% block admin_welcome %}
     {% load static %}
    <form action="{% url 'addcuisine' %}" method="post" enctype="multipart/form-data">
-   {% csrf_token %}
+     {% csrf_token %}
+       {% if c_data %}
+          <form action="{% url 'updatecuisinetype' %}?sid={{ c_data.id }}" method="post" enctype="multipart/form-data">
+             {% csrf_token %}
+      <table  border="0" style="text-align: center;padding-left: auto;background: #99f0ff">
+          <tr><th align="center" style="color: #ff0651"><h1 align=""><b>Update Cuisine</b> </h1></th></tr>
+                    <tr>
+                       <th><input type="hidden" required placeholder="Id" name="cu3" value="{{ c_data.id }}" ></th>
+                    </tr>
 
-   <div class="col-sm-6" style="text-align: center;padding-left:600px">
+                    <tr>
+                       <th><input type="text" required placeholder="Cuisine Type" name="cu1" value="{{ c_data.type }}" ></th>
+                    </tr>
+                    <tr>
+                        <th>
 
-    <table style="background:#cfa7ff" border="0">
-    <tr><th><h3 style="color: #d7170d"><b>Cuisine page</b></h3></th></tr>
-        <tr>
-            <th><input type="text" required placeholder="Cuisine Type" name="cu1"  value="{{ c_data.type }}"></th>
-        </tr>
-        <tr>
-            <th><input type="file" required placeholder="image" name="cu2" value="{{ c_data.photo.url }}"></th>
-        </tr>
-        <tr>
-            <th><button type="submit">Add</button></th>
-        {% for x in messages %}
-        <tr><th>
-        <h3 style="color: #1116ff;font-size: 40px;font-family: 'Segoe MDL2 Assets';text-align: center">
-            {{ x }}
-        </h3>
-        </th></tr>
-    {% endfor %}
-    <tr>
-            <th><h6 style="text-align: center"><a href="{% url 'viewcuisine' %}"><b>View Cuisine Type</b></a></h6></th>
-        </tr>
-    </table>
+                          <input type="file" required placeholder="image" name="cu2" value="{{ c_data.photo.url }}" alt="{{ c_data.image.url }}">
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>{{ c_data.photo.file }}</th>
+                    </tr>
+                    <tr>
+                       <th><button type="submit" class="btn btn-primary" data-toggle="modal" style="background-color: red">Update</button></th>
+                    </tr>
+                 </table>
+          </form>
+       {% else %}
+
+         <div class="col-sm-6" style="text-align: center;padding-left:600px">
+
+        <table style="background:#cfa7ff" border="0">
+              <tr><th><h3 style="color: #d7170d"><b>Cuisine page</b></h3></th></tr>
+              <tr>
+                 <th><input type="text" required placeholder="Cuisine Type" name="cu1"  value="{{ c_data.type }}"></th>
+              </tr>
+              <tr>
+                  <th><input type="file" required placeholder="image" name="cu2" value="{{ c_data.photo.url }}"></th>
+              </tr>
+             <tr>
+                 <th><button type="submit" class="btn btn-primary" data-toggle="modal">Add</button></th>
+             </tr>
+       {% endif %}
+          {% for x in messages %}
+             <tr><th>
+                  <h5 style="color: #ff080a;font-size: 20px;font-family: 'Segoe MDL2 Assets';text-align: center">
+                       {{ x }}
+                  </h5>
+                 </th>
+             </tr>
+          {% endfor %}
+
+      </table>
 
    </div>
+    <table style="padding-top: 200px" border="0" align="center">
+    <tr>
+        <th colspan="5" ><h3 align="center">View All Cuisine Type</h3></th>
+    </tr>
+    <tr>
+        <th>Id</th>
+
+        <th width="200">Cuisine Type</th>
+
+        <th width="200">Photo</th>
+
+        <th width="100">Update</th>
+
+        <th width="100">Delete</th>
+    </tr>
+    {% for x in data %}
+        <tr style="color: #000009">
+            <th width="100">{{ x.id }}</th>
+            <th width="100">{{ x.type }}</th>
+            <th width="100"> <img src="{{ x.photo.url }}" width="100" height="100"></th>
+            <th><a href="{% url 'updatecuisine' %}?id={{ x.id }}"><img src="{% static 'images/update.png' %}"></a></th>
+
+            <th>
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#st{{ x.id }}" style="background-color: red">Delete</button>
+
+<!-- Modal -->
+<div class="modal fade" id="st{{ x.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"><b>Delete Option</b></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <b>Are you sure you want to delete?</b>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+          <a href="{% url 'deletecuisine' %}?id={{ x.id }}"><button type="button" class="btn btn-primary">Yes</button></a>
+      </div>
+    </div>
+  </div>
+</div>
+            </th>
+
+        </tr>
+    {% endfor %}
+
+
+    </table>
 
    </form><br><br>
 
